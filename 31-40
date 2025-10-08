@@ -1,0 +1,174 @@
+31. Simple Interest
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    principal NUMBER := &principal;
+    rate NUMBER := &rate;
+    time NUMBER := &time;
+    interest NUMBER;
+BEGIN
+    interest := (principal * rate * time)/100;
+    DBMS_OUTPUT.PUT_LINE('Simple Interest = '||interest);
+END;
+/
+
+32. Number of divisors
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    num NUMBER := &num;
+    count_div NUMBER := 0;
+BEGIN
+    FOR i IN 1..num LOOP
+        IF MOD(num,i) = 0 THEN
+            count_div := count_div + 1;
+        END IF;
+    END LOOP;
+    DBMS_OUTPUT.PUT_LINE('Number of divisors of '||num||' = '||count_div);
+END;
+/
+
+33. Mean of array
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    n NUMBER := &n;
+    arr SYS.ODCINUMBERLIST := SYS.ODCINUMBERLIST();
+    sum_total NUMBER := 0;
+    mean_val NUMBER;
+BEGIN
+    FOR i IN 1..n LOOP
+        arr.EXTEND;
+        arr(i) := &num;
+        sum_total := sum_total + arr(i);
+    END LOOP;
+    mean_val := sum_total/n;
+    DBMS_OUTPUT.PUT_LINE('Mean of array elements = '||mean_val);
+END;
+/
+
+34. Sum of AP series
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    a NUMBER := &a;  -- first term
+    d NUMBER := &d;  -- common difference
+    n NUMBER := &n;  -- number of terms
+    sum_ap NUMBER := 0;
+BEGIN
+    FOR i IN 0..n-1 LOOP
+        sum_ap := sum_ap + (a + i*d);
+    END LOOP;
+    DBMS_OUTPUT.PUT_LINE('Sum of AP series = '||sum_ap);
+END;
+/
+
+35. Small factorial
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    n NUMBER := &n;
+    factorial NUMBER := 1;
+BEGIN
+    FOR i IN 1..n LOOP
+        factorial := factorial * i;
+    END LOOP;
+    DBMS_OUTPUT.PUT_LINE('Factorial of '||n||' = '||factorial);
+END;
+/
+
+36. Distance between two points
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    x1 NUMBER := &x1;
+    y1 NUMBER := &y1;
+    x2 NUMBER := &x2;
+    y2 NUMBER := &y2;
+    distance NUMBER;
+BEGIN
+    distance := SQRT((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+    DBMS_OUTPUT.PUT_LINE('Distance between points = '||distance);
+END;
+/
+
+37. Sum of GP series
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    a NUMBER := &a;  -- first term
+    r NUMBER := &r;  -- common ratio
+    n NUMBER := &n;  -- number of terms
+    sum_gp NUMBER := 0;
+    term NUMBER := 1;
+BEGIN
+    FOR i IN 0..n-1 LOOP
+        term := a * POWER(r,i);
+        sum_gp := sum_gp + term;
+    END LOOP;
+    DBMS_OUTPUT.PUT_LINE('Sum of GP series = '||sum_gp);
+END;
+/
+
+38. Extract integers from string
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    str_input VARCHAR2(100) := '&str';
+    str_output VARCHAR2(100) := '';
+    ch CHAR(1);
+BEGIN
+    FOR i IN 1..LENGTH(str_input) LOOP
+        ch := SUBSTR(str_input,i,1);
+        IF ch BETWEEN '0' AND '9' THEN
+            str_output := str_output || ch;
+        END IF;
+    END LOOP;
+    DBMS_OUTPUT.PUT_LINE('Extracted integers: '||str_output);
+END;
+/
+
+39. Display longest name
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    n NUMBER := &n;
+    name_input VARCHAR2(100);
+    longest_name VARCHAR2(100) := '';
+BEGIN
+    FOR i IN 1..n LOOP
+        name_input := '&name';
+        IF LENGTH(name_input) > LENGTH(longest_name) THEN
+            longest_name := name_input;
+        END IF;
+    END LOOP;
+    DBMS_OUTPUT.PUT_LINE('Longest name: '||longest_name);
+END;
+/
+
+40. Surface Area and Volume of Cuboid
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    length NUMBER := &length;
+    width NUMBER := &width;
+    height NUMBER := &height;
+    surface_area NUMBER;
+    volume NUMBER;
+BEGIN
+    surface_area := 2*(length*width + width*height + height*length);
+    volume := length*width*height;
+    DBMS_OUTPUT.PUT_LINE('Surface Area = '||surface_area);
+    DBMS_OUTPUT.PUT_LINE('Volume = '||volume);
+END;
+/
