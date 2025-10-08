@@ -1,0 +1,374 @@
+61. Pattern 2 (reverse triangle of stars)
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    n NUMBER := &n;
+BEGIN
+    FOR i IN REVERSE 1..n LOOP
+        DBMS_OUTPUT.PUT_LINE(RPAD('*',i,'*'));
+    END LOOP;
+END;
+/
+
+62. Maximum product of two numbers in array
+SET SERVEROUTPUT ON;
+
+DECLARE
+    n NUMBER := &n;
+    arr SYS.ODCINUMBERLIST := SYS.ODCINUMBERLIST();
+    max_product NUMBER := -999999999;
+BEGIN
+    FOR i IN 1..n LOOP
+        arr.EXTEND;
+        arr(i) := &num;
+    END LOOP;
+
+    FOR i IN 1..n-1 LOOP
+        FOR j IN i+1..n LOOP
+            IF arr(i)*arr(j) > max_product THEN
+                max_product := arr(i)*arr(j);
+            END IF;
+        END LOOP;
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Maximum product = '||max_product);
+END;
+/
+
+63. Check if a number is power of another number
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    base NUMBER := &base;
+    num NUMBER := &num;
+    temp NUMBER := 1;
+    is_power BOOLEAN := FALSE;
+BEGIN
+    WHILE temp < num LOOP
+        temp := temp * base;
+    END LOOP;
+
+    IF temp = num THEN
+        is_power := TRUE;
+    END IF;
+
+    IF is_power THEN
+        DBMS_OUTPUT.PUT_LINE(num||' is a power of '||base);
+    ELSE
+        DBMS_OUTPUT.PUT_LINE(num||' is not a power of '||base);
+    END IF;
+END;
+/
+
+64. Merge two strings
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    str1 VARCHAR2(100) := '&str1';
+    str2 VARCHAR2(100) := '&str2';
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Merged string: '||str1||str2);
+END;
+/
+
+65. Doubling the value
+SET SERVEROUTPUT ON;
+
+DECLARE
+    num NUMBER := &num;
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Double of '||num||' = '||(num*2));
+END;
+/
+
+66. Find all factorial numbers less than or equal to N
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    n NUMBER := &n;
+    fact NUMBER := 1;
+    i NUMBER;
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Factorial numbers <= '||n||':');
+    FOR i IN 1..n LOOP
+        fact := fact * i;
+        EXIT WHEN fact > n;
+        DBMS_OUTPUT.PUT_LINE(fact);
+    END LOOP;
+END;
+/
+
+67. Average in a stream of numbers
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    n NUMBER := &n;
+    arr SYS.ODCINUMBERLIST := SYS.ODCINUMBERLIST();
+    sum_total NUMBER := 0;
+BEGIN
+    FOR i IN 1..n LOOP
+        arr.EXTEND;
+        arr(i) := &num;
+        sum_total := sum_total + arr(i);
+        DBMS_OUTPUT.PUT_LINE('Average after '||i||' inputs: '||(sum_total/i));
+    END LOOP;
+END;
+/
+
+68. Square root of a number
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    num NUMBER := &num;
+    sqrt_num NUMBER;
+BEGIN
+    sqrt_num := SQRT(num);
+    DBMS_OUTPUT.PUT_LINE('Square root of '||num||' = '||sqrt_num);
+END;
+/
+
+69. Intersection of two arrays
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    n1 NUMBER := &n1;
+    n2 NUMBER := &n2;
+    arr1 SYS.ODCINUMBERLIST := SYS.ODCINUMBERLIST();
+    arr2 SYS.ODCINUMBERLIST := SYS.ODCINUMBERLIST();
+    i NUMBER;
+    j NUMBER;
+BEGIN
+    FOR i IN 1..n1 LOOP
+        arr1.EXTEND;
+        arr1(i) := &num;
+    END LOOP;
+
+    FOR i IN 1..n2 LOOP
+        arr2.EXTEND;
+        arr2(i) := &num;
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Intersection elements:');
+    FOR i IN 1..n1 LOOP
+        FOR j IN 1..n2 LOOP
+            IF arr1(i) = arr2(j) THEN
+                DBMS_OUTPUT.PUT_LINE(arr1(i));
+            END IF;
+        END LOOP;
+    END LOOP;
+END;
+/
+
+70. Union of two sorted arrays
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    n1 NUMBER := &n1;
+    n2 NUMBER := &n2;
+    arr1 SYS.ODCINUMBERLIST := SYS.ODCINUMBERLIST();
+    arr2 SYS.ODCINUMBERLIST := SYS.ODCINUMBERLIST();
+    i NUMBER;
+    j NUMBER;
+    exists_in_arr2 BOOLEAN;
+BEGIN
+    FOR i IN 1..n1 LOOP
+        arr1.EXTEND;
+        arr1(i) := &num;
+    END LOOP;
+
+    FOR i IN 1..n2 LOOP
+        arr2.EXTEND;
+        arr2(i) := &num;
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Union of arrays:');
+    FOR i IN 1..n1 LOOP
+        DBMS_OUTPUT.PUT_LINE(arr1(i));
+    END LOOP;
+
+    FOR i IN 1..n2 LOOP
+        exists_in_arr2 := FALSE;
+        FOR j IN 1..n1 LOOP
+            IF arr2(i) = arr1(j) THEN
+                exists_in_arr2 := TRUE;
+            END IF;
+        END LOOP;
+        IF NOT exists_in_arr2 THEN
+            DBMS_OUTPUT.PUT_LINE(arr2(i));
+        END IF;
+    END LOOP;
+END;
+/
+
+71. Check if array is sorted
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    n NUMBER := &n;
+    arr SYS.ODCINUMBERLIST := SYS.ODCINUMBERLIST();
+    is_sorted BOOLEAN := TRUE;
+BEGIN
+    FOR i IN 1..n LOOP
+        arr.EXTEND;
+        arr(i) := &num;
+    END LOOP;
+
+    FOR i IN 1..n-1 LOOP
+        IF arr(i) > arr(i+1) THEN
+            is_sorted := FALSE;
+        END IF;
+    END LOOP;
+
+    IF is_sorted THEN
+        DBMS_OUTPUT.PUT_LINE('Array is sorted');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('Array is not sorted');
+    END IF;
+END;
+/
+
+72. GCD of two numbers
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    a NUMBER := &a;
+    b NUMBER := &b;
+    temp NUMBER;
+BEGIN
+    WHILE b != 0 LOOP
+        temp := b;
+        b := MOD(a,b);
+        a := temp;
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('GCD = '||a);
+END;
+/
+
+73. Fascinating number
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    num NUMBER := &num;
+    prod1 NUMBER := num*2;
+    prod2 NUMBER := num*3;
+    combined VARCHAR2(100);
+BEGIN
+    combined := TO_CHAR(num)||TO_CHAR(prod1)||TO_CHAR(prod2);
+    IF LENGTH(REPLACE(REGEXP_REPLACE(combined,'(.)','\1'),'','')) = 9 THEN
+        DBMS_OUTPUT.PUT_LINE(num||' is a Fascinating number');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE(num||' is not Fascinating');
+    END IF;
+END;
+/
+
+74. Game with numbers (example: sum of digits game)
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    num NUMBER := &num;
+    sum_digits NUMBER := 0;
+    temp NUMBER := num;
+    digit NUMBER;
+BEGIN
+    WHILE temp > 0 LOOP
+        digit := MOD(temp,10);
+        sum_digits := sum_digits + digit;
+        temp := temp / 10;
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Sum of digits: '||sum_digits);
+END;
+/
+
+75. Perfect Square check
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    num NUMBER := &num;
+    sqrt_num NUMBER;
+BEGIN
+    sqrt_num := SQRT(num);
+    IF sqrt_num = FLOOR(sqrt_num) THEN
+        DBMS_OUTPUT.PUT_LINE(num||' is a perfect square');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE(num||' is not a perfect square');
+    END IF;
+END;
+/
+
+76. Prime number check
+SET SERVEROUTPUT ON;
+
+DECLARE
+    num NUMBER := &num;
+    is_prime BOOLEAN := TRUE;
+BEGIN
+    IF num <= 1 THEN
+        is_prime := FALSE;
+    ELSE
+        FOR i IN 2..num-1 LOOP
+            IF MOD(num,i) = 0 THEN
+                is_prime := FALSE;
+            END IF;
+        END LOOP;
+    END IF;
+
+    IF is_prime THEN
+        DBMS_OUTPUT.PUT_LINE(num||' is prime');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE(num||' is not prime');
+    END IF;
+END;
+/
+
+77. Minimum difference among K elements (array)
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    n NUMBER := &n;
+    k NUMBER := &k;
+    arr SYS.ODCINUMBERLIST := SYS.ODCINUMBERLIST();
+    temp NUMBER;
+    min_diff NUMBER := 9999999;
+BEGIN
+    FOR i IN 1..n LOOP
+        arr.EXTEND;
+        arr(i) := &num;
+    END LOOP;
+
+    -- Bubble sort
+    FOR i IN 1..n-1 LOOP
+        FOR j IN i+1..n LOOP
+            IF arr(i) > arr(j) THEN
+                temp := arr(i);
+                arr(i) := arr(j);
+                arr(j) := temp;
+            END IF;
+        END LOOP;
+    END LOOP;
+
+    FOR i IN 1..n-k+1 LOOP
+        IF arr(i+k-1)-arr(i) < min_diff THEN
+            min_diff := arr(i+k-1)-arr(i);
+        END IF;
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Minimum difference among K elements = '||min_diff);
+END;
+/
