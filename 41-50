@@ -1,0 +1,215 @@
+41. Floyd’s Triangle
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    n NUMBER := &n;
+    count NUMBER := 1;
+BEGIN
+    FOR i IN 1..n LOOP
+        FOR j IN 1..i LOOP
+            DBMS_OUTPUT.PUT(count||' ');
+            count := count + 1;
+        END LOOP;
+        DBMS_OUTPUT.PUT_LINE('');
+    END LOOP;
+END;
+/
+
+42. Cube root of a number
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    num NUMBER := &num;
+    cube_root NUMBER;
+BEGIN
+    cube_root := POWER(num, 1/3);
+    DBMS_OUTPUT.PUT_LINE('Cube root of '||num||' = '||cube_root);
+END;
+/
+
+43. Identical matrices
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    r NUMBER := &rows;
+    c NUMBER := &cols;
+    is_identical BOOLEAN := TRUE;
+    matrix1 SYS.ODCINUMBERLIST := SYS.ODCINUMBERLIST();
+    matrix2 SYS.ODCINUMBERLIST := SYS.ODCINUMBERLIST();
+BEGIN
+    FOR i IN 1..r*c LOOP
+        matrix1.EXTEND;
+        matrix2.EXTEND;
+        matrix1(i) := &num;
+        matrix2(i) := &num;
+        IF matrix1(i) != matrix2(i) THEN
+            is_identical := FALSE;
+        END IF;
+    END LOOP;
+
+    IF is_identical THEN
+        DBMS_OUTPUT.PUT_LINE('Matrices are identical');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('Matrices are not identical');
+    END IF;
+END;
+/
+
+44. Diagonal sum of a square matrix
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    n NUMBER := &n;
+    matrix SYS.ODCINUMBERLIST := SYS.ODCINUMBERLIST();
+    sum_diag NUMBER := 0;
+BEGIN
+    FOR i IN 1..n*n LOOP
+        matrix.EXTEND;
+        matrix(i) := &num;
+    END LOOP;
+
+    FOR i IN 1..n LOOP
+        sum_diag := sum_diag + matrix((i-1)*n + i);
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Sum of diagonals = '||sum_diag);
+END;
+/
+
+45. Automorphic number
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    num NUMBER := &num;
+    square NUMBER;
+    len NUMBER := LENGTH(TO_CHAR(num));
+    last_digits NUMBER;
+BEGIN
+    square := num*num;
+    last_digits := MOD(square, POWER(10,len));
+
+    IF last_digits = num THEN
+        DBMS_OUTPUT.PUT_LINE(num||' is an Automorphic number');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE(num||' is not Automorphic');
+    END IF;
+END;
+/
+
+46. Difference between sum of diagonals
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    n NUMBER := &n;
+    matrix SYS.ODCINUMBERLIST := SYS.ODCINUMBERLIST();
+    sum_primary NUMBER := 0;
+    sum_secondary NUMBER := 0;
+BEGIN
+    FOR i IN 1..n*n LOOP
+        matrix.EXTEND;
+        matrix(i) := &num;
+    END LOOP;
+
+    FOR i IN 1..n LOOP
+        sum_primary := sum_primary + matrix((i-1)*n + i);
+        sum_secondary := sum_secondary + matrix(i*n - i + 1);
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Difference of diagonal sums = '||ABS(sum_primary - sum_secondary));
+END;
+/
+
+47. Number of diagonals in a polygon
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    n NUMBER := &n;  -- number of sides
+    diagonals NUMBER;
+BEGIN
+    diagonals := n*(n-3)/2;
+    DBMS_OUTPUT.PUT_LINE('Number of diagonals = '||diagonals);
+END;
+/
+
+48. Toeplitz matrix check
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    r NUMBER := &rows;
+    c NUMBER := &cols;
+    matrix SYS.ODCINUMBERLIST := SYS.ODCINUMBERLIST();
+    is_toeplitz BOOLEAN := TRUE;
+BEGIN
+    FOR i IN 1..r*c LOOP
+        matrix.EXTEND;
+        matrix(i) := &num;
+    END LOOP;
+
+    FOR i IN 1..r-1 LOOP
+        FOR j IN 1..c-1 LOOP
+            IF matrix((i-1)*c + j) != matrix(i*c + j+1 - c) THEN
+                is_toeplitz := FALSE;
+            END IF;
+        END LOOP;
+    END LOOP;
+
+    IF is_toeplitz THEN
+        DBMS_OUTPUT.PUT_LINE('Matrix is Toeplitz');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('Matrix is not Toeplitz');
+    END IF;
+END;
+/
+
+49. Number pattern
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    n NUMBER := &n;
+BEGIN
+    FOR i IN 1..n LOOP
+        FOR j IN 1..i LOOP
+            DBMS_OUTPUT.PUT(j||' ');
+        END LOOP;
+        DBMS_OUTPUT.PUT_LINE('');
+    END LOOP;
+END;
+/
+
+50. Second largest element in array
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    n NUMBER := &n;
+    arr SYS.ODCINUMBERLIST := SYS.ODCINUMBERLIST();
+    temp NUMBER;
+BEGIN
+    FOR i IN 1..n LOOP
+        arr.EXTEND;
+        arr(i) := &num;
+    END LOOP;
+
+    -- Bubble sort descending
+    FOR i IN 1..n-1 LOOP
+        FOR j IN i+1..n LOOP
+            IF arr(i) < arr(j) THEN
+                temp := arr(i);
+                arr(i) := arr(j);
+                arr(j) := temp;
+            END IF;
+        END LOOP;
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Second largest element = '||arr(2));
+END;
+/
