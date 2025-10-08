@@ -1,0 +1,268 @@
+51. Third largest element in array
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    n NUMBER := &n;
+    arr SYS.ODCINUMBERLIST := SYS.ODCINUMBERLIST();
+    temp NUMBER;
+BEGIN
+    FOR i IN 1..n LOOP
+        arr.EXTEND;
+        arr(i) := &num;
+    END LOOP;
+
+    -- Bubble sort descending
+    FOR i IN 1..n-1 LOOP
+        FOR j IN i+1..n LOOP
+            IF arr(i) < arr(j) THEN
+                temp := arr(i);
+                arr(i) := arr(j);
+                arr(j) := temp;
+            END IF;
+        END LOOP;
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Third largest element = '||arr(3));
+END;
+/
+
+52. Maximum occurring character
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    str_input VARCHAR2(100) := '&str';
+    max_count NUMBER := 0;
+    max_char CHAR(1);
+    ch CHAR(1);
+    count_ch NUMBER;
+BEGIN
+    FOR i IN 1..LENGTH(str_input) LOOP
+        ch := SUBSTR(str_input,i,1);
+        count_ch := 0;
+        FOR j IN 1..LENGTH(str_input) LOOP
+            IF SUBSTR(str_input,j,1) = ch THEN
+                count_ch := count_ch + 1;
+            END IF;
+        END LOOP;
+        IF count_ch > max_count THEN
+            max_count := count_ch;
+            max_char := ch;
+        END IF;
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Maximum occurring character: '||max_char);
+END;
+/
+
+53. Uncommon characters between two strings
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    str1 VARCHAR2(100) := '&str1';
+    str2 VARCHAR2(100) := '&str2';
+    result_str VARCHAR2(100) := '';
+    ch CHAR(1);
+    found BOOLEAN;
+BEGIN
+    FOR i IN 1..LENGTH(str1) LOOP
+        ch := SUBSTR(str1,i,1);
+        found := FALSE;
+        FOR j IN 1..LENGTH(str2) LOOP
+            IF ch = SUBSTR(str2,j,1) THEN
+                found := TRUE;
+            END IF;
+        END LOOP;
+        IF NOT found THEN
+            result_str := result_str || ch;
+        END IF;
+    END LOOP;
+
+    FOR i IN 1..LENGTH(str2) LOOP
+        ch := SUBSTR(str2,i,1);
+        found := FALSE;
+        FOR j IN 1..LENGTH(str1) LOOP
+            IF ch = SUBSTR(str1,j,1) THEN
+                found := TRUE;
+            END IF;
+        END LOOP;
+        IF NOT found THEN
+            result_str := result_str || ch;
+        END IF;
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Uncommon characters: '||result_str);
+END;
+/
+
+54. Remove consecutive characters from string
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    str_input VARCHAR2(100) := '&str';
+    str_output VARCHAR2(100) := '';
+    ch CHAR(1);
+    prev CHAR(1) := '';
+BEGIN
+    FOR i IN 1..LENGTH(str_input) LOOP
+        ch := SUBSTR(str_input,i,1);
+        IF ch != prev THEN
+            str_output := str_output || ch;
+            prev := ch;
+        END IF;
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('String after removing consecutive chars: '||str_output);
+END;
+/
+
+55. Replace all 0's with 5
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    num NUMBER := &num;
+    temp NUMBER := &num;
+    digit NUMBER;
+    rev NUMBER := 0;
+    result NUMBER := 0;
+    multiplier NUMBER := 1;
+BEGIN
+    -- Reverse digits while replacing 0 with 5
+    WHILE temp > 0 LOOP
+        digit := MOD(temp,10);
+        IF digit = 0 THEN
+            digit := 5;
+        END IF;
+        rev := rev*10 + digit;
+        temp := temp / 10;
+    END LOOP;
+
+    -- Reverse again to get correct order
+    WHILE rev > 0 LOOP
+        digit := MOD(rev,10);
+        result := result*10 + digit;
+        rev := rev / 10;
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Number after replacing 0 with 5: '||result);
+END;
+/
+
+56. Exceptionally odd (numbers with only odd digits)
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    num NUMBER := &num;
+    temp NUMBER := &num;
+    digit NUMBER;
+    is_exceptional BOOLEAN := TRUE;
+BEGIN
+    WHILE temp > 0 LOOP
+        digit := MOD(temp,10);
+        IF MOD(digit,2) = 0 THEN
+            is_exceptional := FALSE;
+        END IF;
+        temp := temp / 10;
+    END LOOP;
+
+    IF is_exceptional THEN
+        DBMS_OUTPUT.PUT_LINE(num||' is exceptionally odd');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE(num||' is not exceptionally odd');
+    END IF;
+END;
+/
+
+57. Repeated character in string
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    str_input VARCHAR2(100) := '&str';
+    ch CHAR(1);
+    found BOOLEAN;
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Repeated characters:');
+    FOR i IN 1..LENGTH(str_input) LOOP
+        ch := SUBSTR(str_input,i,1);
+        found := FALSE;
+        FOR j IN i+1..LENGTH(str_input) LOOP
+            IF ch = SUBSTR(str_input,j,1) THEN
+                found := TRUE;
+            END IF;
+        END LOOP;
+        IF found THEN
+            DBMS_OUTPUT.PUT_LINE(ch);
+        END IF;
+    END LOOP;
+END;
+/
+
+58. Check if number is sparse or not
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    num NUMBER := &num;
+    temp NUMBER := &num;
+    is_sparse BOOLEAN := TRUE;
+BEGIN
+    -- Convert to binary string
+    DECLARE
+        bin VARCHAR2(100) := '';
+        digit NUMBER;
+    BEGIN
+        WHILE temp > 0 LOOP
+            digit := MOD(temp,2);
+            bin := TO_CHAR(digit) || bin;
+            temp := temp / 2;
+        END LOOP;
+
+        -- Check for consecutive 1s
+        FOR i IN 1..LENGTH(bin)-1 LOOP
+            IF SUBSTR(bin,i,1) = '1' AND SUBSTR(bin,i+1,1) = '1' THEN
+                is_sparse := FALSE;
+            END IF;
+        END LOOP;
+
+        IF is_sparse THEN
+            DBMS_OUTPUT.PUT_LINE(num||' is sparse');
+        ELSE
+            DBMS_OUTPUT.PUT_LINE(num||' is not sparse');
+        END IF;
+    END;
+END;
+/
+
+59. Leap Year check
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    year NUMBER := &year;
+BEGIN
+    IF MOD(year,400) = 0 OR (MOD(year,4)=0 AND MOD(year,100) !=0) THEN
+        DBMS_OUTPUT.PUT_LINE(year||' is a Leap Year');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE(year||' is not a Leap Year');
+    END IF;
+END;
+/
+
+60. Pattern 1 (simple triangle of stars)
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    n NUMBER := &n;
+BEGIN
+    FOR i IN 1..n LOOP
+        DBMS_OUTPUT.PUT_LINE(RPAD('*',i,'*'));
+    END LOOP;
+END;
+/
