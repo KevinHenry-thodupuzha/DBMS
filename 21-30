@@ -1,1 +1,239 @@
+21. Sum of digits is palindrome or not
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    num NUMBER;
+    temp NUMBER;
+    sum_digits NUMBER := 0;
+    rev NUMBER := 0;
+    digit NUMBER;
+BEGIN
+    num := &num;
+    temp := num;
+
+    -- Sum of digits
+    WHILE temp > 0 LOOP
+        digit := MOD(temp,10);
+        sum_digits := sum_digits + digit;
+        temp := temp / 10;
+    END LOOP;
+
+    -- Check palindrome of sum
+    temp := sum_digits;
+    WHILE temp > 0 LOOP
+        digit := MOD(temp,10);
+        rev := rev*10 + digit;
+        temp := temp / 10;
+    END LOOP;
+
+    IF sum_digits = rev THEN
+        DBMS_OUTPUT.PUT_LINE('Sum of digits '||sum_digits||' is palindrome');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('Sum of digits '||sum_digits||' is not palindrome');
+    END IF;
+END;
+/
+
+22. Perfect arrays (all elements sum of divisors = number)
+
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    n NUMBER;
+    arr SYS.ODCINUMBERLIST := SYS.ODCINUMBERLIST();
+    sum_div NUMBER;
+    i NUMBER;
+    j NUMBER;
+BEGIN
+    n := &n;
+    FOR i IN 1..n LOOP
+        arr.EXTEND;
+        arr(i) := &num;
+    END LOOP;
+
+    FOR i IN 1..n LOOP
+        sum_div := 0;
+        FOR j IN 1..arr(i)-1 LOOP
+            IF MOD(arr(i),j) = 0 THEN
+                sum_div := sum_div + j;
+            END IF;
+        END LOOP;
+
+        IF sum_div = arr(i) THEN
+            DBMS_OUTPUT.PUT_LINE(arr(i)||' is a perfect number');
+        ELSE
+            DBMS_OUTPUT.PUT_LINE(arr(i)||' is not perfect');
+        END IF;
+    END LOOP;
+END;
+/
+
+23. Multiplication Table
+
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    num NUMBER;
+BEGIN
+    num := &num;
+    FOR i IN 1..10 LOOP
+        DBMS_OUTPUT.PUT_LINE(num||' * '||i||' = '||num*i);
+    END LOOP;
+END;
+/
+
+24. Reversing the vowels in a string
+
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    str_input VARCHAR2(100) := '&str';
+    str_output VARCHAR2(100);
+    vowels VARCHAR2(10) := 'aeiouAEIOU';
+    temp_vowels VARCHAR2(100) := '';
+    ch CHAR(1);
+    i NUMBER;
+BEGIN
+    -- Extract vowels
+    FOR i IN 1..LENGTH(str_input) LOOP
+        ch := SUBSTR(str_input,i,1);
+        IF INSTR(vowels,ch) > 0 THEN
+            temp_vowels := ch || temp_vowels;  -- reverse
+        END IF;
+    END LOOP;
+
+    str_output := '';
+    j NUMBER := 1;
+    FOR i IN 1..LENGTH(str_input) LOOP
+        ch := SUBSTR(str_input,i,1);
+        IF INSTR(vowels,ch) > 0 THEN
+            str_output := str_output || SUBSTR(temp_vowels,j,1);
+            j := j + 1;
+        ELSE
+            str_output := str_output || ch;
+        END IF;
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('String after reversing vowels: '||str_output);
+END;
+/
+
+25. Remove vowels from string
+
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    str_input VARCHAR2(100) := '&str';
+    str_output VARCHAR2(100) := '';
+    ch CHAR(1);
+BEGIN
+    FOR i IN 1..LENGTH(str_input) LOOP
+        ch := SUBSTR(str_input,i,1);
+        IF ch NOT IN ('a','e','i','o','u','A','E','I','O','U') THEN
+            str_output := str_output || ch;
+        END IF;
+    END LOOP;
+    DBMS_OUTPUT.PUT_LINE('String without vowels: '||str_output);
+END;
+/
+
+26. Count of camel case characters
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    str_input VARCHAR2(100) := '&str';
+    count_upper NUMBER := 0;
+    ch CHAR(1);
+BEGIN
+    FOR i IN 1..LENGTH(str_input) LOOP
+        ch := SUBSTR(str_input,i,1);
+        IF ch BETWEEN 'A' AND 'Z' THEN
+            count_upper := count_upper + 1;
+        END IF;
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Number of uppercase letters (CamelCase): '||count_upper);
+END;
+/
+
+27. Remainder evaluation
+
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    num1 NUMBER := &num1;
+    num2 NUMBER := &num2;
+    rem NUMBER;
+BEGIN
+    rem := MOD(num1,num2);
+    DBMS_OUTPUT.PUT_LINE('Remainder of '||num1||' / '||num2||' = '||rem);
+END;
+/
+
+28. Convert a list of characters into a string
+
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    n NUMBER := &n;
+    ch CHAR(1);
+    str_output VARCHAR2(100) := '';
+BEGIN
+    FOR i IN 1..n LOOP
+        ch := '&ch';
+        str_output := str_output || ch;
+    END LOOP;
+    DBMS_OUTPUT.PUT_LINE('Combined string: '||str_output);
+END;
+/
+
+29. Count type of characters (vowel, consonant, digit)
+
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    str_input VARCHAR2(100) := '&str';
+    vowels_count NUMBER := 0;
+    consonant_count NUMBER := 0;
+    digit_count NUMBER := 0;
+    ch CHAR(1);
+BEGIN
+    FOR i IN 1..LENGTH(str_input) LOOP
+        ch := SUBSTR(str_input,i,1);
+        IF ch IN ('a','e','i','o','u','A','E','I','O','U') THEN
+            vowels_count := vowels_count + 1;
+        ELSIF ch BETWEEN 'A' AND 'Z' OR ch BETWEEN 'a' AND 'z' THEN
+            consonant_count := consonant_count + 1;
+        ELSIF ch BETWEEN '0' AND '9' THEN
+            digit_count := digit_count + 1;
+        END IF;
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Vowels: '||vowels_count||', Consonants: '||consonant_count||', Digits: '||digit_count);
+END;
+/
+
+30. Find n-th term of series 1, 3, 6, 10, 15…
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    n NUMBER := &n;
+    term NUMBER := 0;
+BEGIN
+    FOR i IN 1..n LOOP
+        term := term + i;
+    END LOOP;
+    DBMS_OUTPUT.PUT_LINE(n||'-th term of series is: '||term);
+END;
+/
 
