@@ -1,0 +1,241 @@
+11. Sum of odd and even elements in an array
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    n NUMBER;
+    arr SYS.ODCINUMBERLIST := SYS.ODCINUMBERLIST();
+    sum_odd NUMBER := 0;
+    sum_even NUMBER := 0;
+BEGIN
+    n := &n;
+    FOR i IN 1..n LOOP
+        arr.EXTEND;
+        arr(i) := &num;
+        IF MOD(arr(i),2) = 0 THEN
+            sum_even := sum_even + arr(i);
+        ELSE
+            sum_odd := sum_odd + arr(i);
+        END IF;
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Sum of even elements: '||sum_even);
+    DBMS_OUTPUT.PUT_LINE('Sum of odd elements: '||sum_odd);
+END;
+/
+
+12. Program to print a diamond shape
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    n NUMBER;
+BEGIN
+    n := &n;
+    FOR i IN 1..n LOOP
+        DBMS_OUTPUT.PUT_LINE(LPAD('*', n+i, '*') || RPAD('*', n-i, ' '));
+    END LOOP;
+END;
+/
+
+13. Program to print half diamond shape
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    n NUMBER;
+BEGIN
+    n := &n;
+    FOR i IN 1..n LOOP
+        DBMS_OUTPUT.PUT_LINE(RPAD('*', i, '*'));
+    END LOOP;
+    FOR i IN REVERSE 1..n-1 LOOP
+        DBMS_OUTPUT.PUT_LINE(RPAD('*', i, '*'));
+    END LOOP;
+END;
+/
+
+14. Print alternate elements of an array
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    n NUMBER;
+    arr SYS.ODCINUMBERLIST := SYS.ODCINUMBERLIST();
+BEGIN
+    n := &n;
+    FOR i IN 1..n LOOP
+        arr.EXTEND;
+        arr(i) := &num;
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Alternate elements:');
+    FOR i IN 1..n LOOP
+        IF MOD(i,2) = 1 THEN
+            DBMS_OUTPUT.PUT_LINE(arr(i));
+        END IF;
+    END LOOP;
+END;
+/
+
+15. Count digits of a number
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    num NUMBER;
+    temp NUMBER;
+    count_digits NUMBER := 0;
+BEGIN
+    num := &num;
+    temp := num;
+
+    IF temp = 0 THEN
+        count_digits := 1;
+    END IF;
+
+    WHILE temp > 0 LOOP
+        temp := temp / 10;
+        count_digits := count_digits + 1;
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Number of digits in '||num||' is: '||count_digits);
+END;
+/
+
+16. Palindromic array
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    n NUMBER;
+    arr SYS.ODCINUMBERLIST := SYS.ODCINUMBERLIST();
+    is_palindrome BOOLEAN := TRUE;
+BEGIN
+    n := &n;
+    FOR i IN 1..n LOOP
+        arr.EXTEND;
+        arr(i) := &num;
+    END LOOP;
+
+    FOR i IN 1..n/2 LOOP
+        IF arr(i) != arr(n-i+1) THEN
+            is_palindrome := FALSE;
+        END IF;
+    END LOOP;
+
+    IF is_palindrome THEN
+        DBMS_OUTPUT.PUT_LINE('Array is Palindromic');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('Array is not Palindromic');
+    END IF;
+END;
+/
+
+17. Find median of array
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    n NUMBER;
+    arr SYS.ODCINUMBERLIST := SYS.ODCINUMBERLIST();
+    temp NUMBER;
+    median_val NUMBER;
+BEGIN
+    n := &n;
+    FOR i IN 1..n LOOP
+        arr.EXTEND;
+        arr(i) := &num;
+    END LOOP;
+
+    -- Bubble sort
+    FOR i IN 1..n-1 LOOP
+        FOR j IN i+1..n LOOP
+            IF arr(i) > arr(j) THEN
+                temp := arr(i);
+                arr(i) := arr(j);
+                arr(j) := temp;
+            END IF;
+        END LOOP;
+    END LOOP;
+
+    IF MOD(n,2) = 1 THEN
+        median_val := arr((n+1)/2);
+    ELSE
+        median_val := (arr(n/2) + arr(n/2 + 1))/2;
+    END IF;
+
+    DBMS_OUTPUT.PUT_LINE('Median value: '||median_val);
+END;
+/
+
+18. Armstrong number
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    num NUMBER;
+    temp NUMBER;
+    sum_digits NUMBER := 0;
+    digit NUMBER;
+BEGIN
+    num := &num;
+    temp := num;
+
+    WHILE temp > 0 LOOP
+        digit := MOD(temp,10);
+        sum_digits := sum_digits + digit*digit*digit;
+        temp := temp / 10;
+    END LOOP;
+
+    IF sum_digits = num THEN
+        DBMS_OUTPUT.PUT_LINE(num||' is an Armstrong number');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE(num||' is not an Armstrong number');
+    END IF;
+END;
+/
+
+19. Reverse digits of a number
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    num NUMBER;
+    temp NUMBER;
+    rev NUMBER := 0;
+    digit NUMBER;
+BEGIN
+    num := &num;
+    temp := num;
+
+    WHILE temp > 0 LOOP
+        digit := MOD(temp,10);
+        rev := rev*10 + digit;
+        temp := temp / 10;
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Reverse of '||num||' is: '||rev);
+END;
+/
+
+20. Remove spaces from a string
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    str_input VARCHAR2(100);
+    str_output VARCHAR2(100) := '';
+    ch CHAR(1);
+BEGIN
+    str_input := '&str';
+    FOR i IN 1..LENGTH(str_input) LOOP
+        ch := SUBSTR(str_input,i,1);
+        IF ch != ' ' THEN
+            str_output := str_output || ch;
+        END IF;
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('String without spaces: '||str_output);
+END;
+/
