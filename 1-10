@@ -1,0 +1,200 @@
+1. Sum of first N natural numbers
+SET SERVEROUTPUT ON;
+
+DECLARE
+    n NUMBER;
+    sum_total NUMBER := 0;
+BEGIN
+    n := &n;
+    FOR i IN 1..n LOOP
+        sum_total := sum_total + i;
+    END LOOP;
+    DBMS_OUTPUT.PUT_LINE('Sum of first '||n||' numbers is: '||sum_total);
+END;
+/
+
+
+
+2. Check if number is Binary
+SET SERVEROUTPUT ON;
+
+DECLARE
+    num NUMBER;
+    temp NUMBER;
+    digit NUMBER;
+    is_binary BOOLEAN := TRUE;
+BEGIN
+    num := &num;
+    temp := num;
+    WHILE temp > 0 LOOP
+        digit := MOD(temp,10);
+        IF digit != 0 AND digit != 1 THEN
+            is_binary := FALSE;
+        END IF;
+        temp := temp / 10;
+    END LOOP;
+
+    IF is_binary THEN
+        DBMS_OUTPUT.PUT_LINE(num||' is binary');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE(num||' is not binary');
+    END IF;
+END;
+/
+
+
+
+3. Odd or Even
+SET SERVEROUTPUT ON;
+
+DECLARE
+    num NUMBER;
+BEGIN
+    num := &num;
+    IF MOD(num,2) = 0 THEN
+        DBMS_OUTPUT.PUT_LINE(num||' is Even');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE(num||' is Odd');
+    END IF;
+END;
+/
+
+4. Swap two numbers
+SET SERVEROUTPUT ON;
+
+DECLARE
+    num1 NUMBER;
+    num2 NUMBER;
+    temp NUMBER;
+BEGIN
+    num1 := &num1;
+    num2 := &num2;
+    DBMS_OUTPUT.PUT_LINE('Before Swap: num1='||num1||', num2='||num2);
+    temp := num1;
+    num1 := num2;
+    num2 := temp;
+    DBMS_OUTPUT.PUT_LINE('After Swap: num1='||num1||', num2='||num2);
+END;
+/
+
+
+5. Sum of Digits
+SET SERVEROUTPUT ON;
+
+DECLARE
+    num NUMBER;
+    sum_digits NUMBER := 0;
+    digit NUMBER;
+    temp NUMBER;
+BEGIN
+    num := &num;
+    temp := num;
+    WHILE temp > 0 LOOP
+        digit := MOD(temp,10);
+        sum_digits := sum_digits + digit;
+        temp := temp / 10;
+    END LOOP;
+    DBMS_OUTPUT.PUT_LINE('Sum of digits of '||num||' is: '||sum_digits);
+END;
+/
+
+6. Vowel or Not
+SET SERVEROUTPUT ON;
+
+DECLARE
+    ch CHAR(1);
+BEGIN
+    ch := '&ch';
+    IF ch IN ('a','e','i','o','u','A','E','I','O','U') THEN
+        DBMS_OUTPUT.PUT_LINE(ch||' is a vowel');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE(ch||' is not a vowel');
+    END IF;
+END;
+/
+
+7. Greatest of three numbers
+SET SERVEROUTPUT ON;
+
+DECLARE
+    num1 NUMBER;
+    num2 NUMBER;
+    num3 NUMBER;
+    greatest NUMBER;
+BEGIN
+    num1 := &num1;
+    num2 := &num2;
+    num3 := &num3;
+
+    IF num1 >= num2 AND num1 >= num3 THEN
+        greatest := num1;
+    ELSIF num2 >= num1 AND num2 >= num3 THEN
+        greatest := num2;
+    ELSE
+        greatest := num3;
+    END IF;
+
+    DBMS_OUTPUT.PUT_LINE('Greatest number is: '||greatest);
+END;
+/
+
+8. Lower case to Upper case
+SET SERVEROUTPUT ON;
+
+DECLARE
+    ch CHAR(1);
+    upper_ch CHAR(1);
+BEGIN
+    ch := '&ch';
+    IF ch BETWEEN 'a' AND 'z' THEN
+        upper_ch := CHR(ASCII(ch)-32);
+        DBMS_OUTPUT.PUT_LINE('Uppercase: '||upper_ch);
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('Character is not lowercase');
+    END IF;
+END;
+/
+
+9. Binary representation of number
+SET SERVEROUTPUT ON;
+
+DECLARE
+    num NUMBER;
+    temp NUMBER;
+    bin VARCHAR2(100) := '';
+    digit NUMBER;
+BEGIN
+    num := &num;
+    temp := num;
+    IF num = 0 THEN
+        bin := '0';
+    END IF;
+
+    WHILE temp > 0 LOOP
+        digit := MOD(temp,2);
+        bin := TO_CHAR(digit) || bin;
+        temp := temp / 2;
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Binary of '||num||' is: '||bin);
+END;
+/
+
+10. Multiply Array
+SET SERVEROUTPUT ON;
+
+DECLARE
+    n NUMBER;
+    product NUMBER := 1;
+    arr_num SYS.ODCINUMBERLIST := SYS.ODCINUMBERLIST();
+BEGIN
+    n := &n;
+    FOR i IN 1..n LOOP
+        arr_num.EXTEND;
+        arr_num(i) := &num;
+        product := product * arr_num(i);
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Product of array elements: '||product);
+END;
+/
